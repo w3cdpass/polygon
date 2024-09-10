@@ -1,0 +1,171 @@
+<!-- ////////////////
+// Blinking stars
+// code from : https://github.com/jmgomezpoveda/css-blinking-stars
+// Jose Manuel Gómez Poveda
+//////////////// -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polygon</title>
+    <style>
+        body {
+            
+            font-family: monospace;
+            background: linear-gradient(to top, #334, #000);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+        .logo-text {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .staticstars {
+            background: #000 url('stars.png') repeat top center;
+            background-attachment: fixed;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .blinkingstar {
+            animation: blinkingstar 10s infinite;
+            position: absolute;
+            border-radius: 50%;
+        }
+        @keyframes blinkingstar {
+            0%, 4% { opacity: 1; }
+            2% { opacity: 0.3; }
+        }
+        .shootingstar {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 6px 3px white;
+            animation: shooting 1.5s linear infinite;
+            z-index: 1;
+        }
+        @keyframes shooting {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+                box-shadow: 0 0 6px 3px white,
+                            -10px -10px 20px rgba(255, 255, 255, 0.7),
+                            -20px -20px 30px rgba(255, 255, 255, 0.5),
+                            -30px -30px 40px rgba(255, 255, 255, 0.2);
+            }
+            100% {
+                transform: translate(-200px, 200px);
+                opacity: 0;
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+        .repo-box {
+            display: inline-block;
+            padding: 3px 10px; /* Further reduced padding for a smaller size */
+            border: 2px solid white; /* Solid white border */
+            border-radius: 4px; /* Slightly rounded corners */
+            background-color: rgba(0, 0, 0, 0); /* Transparent background */
+            color: white; /* White text */
+            font-family: monospace; /* Monospace font */
+            text-align: center;
+            cursor: pointer; /* Changes the cursor to a pointer on hover */
+            transition: transform 0.2s; /* Smooth hover effect */
+            font-size: 12px; /* Smaller font size */
+            line-height: 1; /* More compact line height */
+        }
+        
+        /* Hover effect for the repo box */
+        .logo-image {
+            width: 50px; /* Set the width of the image to 50px (adjust as needed) */
+            height: auto; /* Keeps the aspect ratio intact */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="blinkingstars"></div>
+    <script>
+        function supportsGradients() {
+            const elem = document.createElement('div');
+            const style = elem.style;
+            style.backgroundImage = "linear-gradient(top, #9f9, white)";
+            return style.backgroundImage.includes("gradient");
+        }
+
+        function createParticle(id, maxSize, maxDelay) {
+            const delay = Math.random() * maxDelay;
+            const size = Math.random() * (maxSize - 1) + 1;
+            const particle = document.createElement('div');
+            particle.className = 'blinkingstar';
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            const color = `#${Math.floor(size * 192 / maxSize).toString(16).padStart(2, '0')}${Math.floor(size * 192 / maxSize).toString(16).padStart(2, '0')}${Math.floor(size * 192 / maxSize).toString(16).padStart(2, '0')}`;
+            particle.style.background = `radial-gradient(circle, ${color} 0%, rgba(0,0,0,0) 100%)`;
+            particle.style.animationDelay = `${delay}ms`;
+            return particle;
+        }
+
+        function createStars(containerId, numParticles, maxSize, maxDelay) {
+            const container = document.getElementById(containerId);
+            for (let i = 0; i < numParticles; i++) {
+                const star = createParticle(i, maxSize, maxDelay);
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                container.appendChild(star);
+            }
+        }
+
+        function createShootingStar() {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'shootingstar';
+            
+            // Set random initial position
+            shootingStar.style.top = `${Math.random() * 80}%`;
+            shootingStar.style.left = `${Math.random() * 80}%`;
+            
+            document.body.appendChild(shootingStar);
+
+            // Remove shooting star after animation ends
+            setTimeout(() => {
+                shootingStar.remove();
+            }, 1500);
+        }
+
+        function init() {
+            createStars("blinkingstars", 125, 5, 10000);
+
+            // Create shooting star at random intervals
+            setInterval(() => {
+                createShootingStar();
+            }, Math.random() * 5000 + 5000); // Between 5 to 10 seconds
+        }
+
+        window.addEventListener('load', init);
+    </script>
+    <div class="container">
+        <div class="logo-con">
+            <img src="polygon.png" alt="Logo" class="logo-image"> <span class="logo-text">Polygon</span>
+        </div>
+        <div id="repo" class="repo-box" onclick="window.open('https://github.com/w3cdpass/polygon', '_blank')">
+            <span>Github Repository</span>
+        </div>
+        <div id="repo" class="repo-box" onclick="window.open('https://github.com/w3cdpass/polygon', '_blank')">
+                <span>🌟 GIVE IT STAR</span>
+        </div>
+    </div>
+</body>
+
+</html

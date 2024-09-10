@@ -1,0 +1,16 @@
+{
+  "name": "polygon",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.20.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.2" 
+  }
+}
